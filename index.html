@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="HTML5 Spielesammlung mit klassischen Spielen wie Pacman, Tetris und mehr">
     <title>HTML5 Spielesammlung | HTML5 Games Collection</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <style>
@@ -19,6 +20,9 @@
             --shadow-light: 0 10px 20px rgba(0,0,0,0.1);
             --shadow-dark: 0 10px 20px rgba(0,0,0,0.3);
             --animation-duration: 0.5s;
+            --content-max-width: 1600px;
+            --card-min-width: 280px;
+            --card-max-width: 400px;
         }
 
         .dark-mode {
@@ -44,6 +48,14 @@
             padding: 20px;
             min-height: 100vh;
             position: relative;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: var(--content-max-width);
+            margin: 0 auto;
+            padding: 0 15px;
         }
 
         header {
@@ -53,6 +65,9 @@
             padding: 1rem 2rem;
             margin-bottom: 2rem;
             position: relative;
+            max-width: var(--content-max-width);
+            margin-left: auto;
+            margin-right: auto;
         }
 
         h1 {
@@ -84,6 +99,9 @@
             margin-bottom: 2rem;
             flex-wrap: wrap;
             gap: 15px;
+            max-width: var(--content-max-width);
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .search-box {
@@ -130,6 +148,7 @@
             font-weight: 500;
             box-shadow: var(--shadow-light);
             transition: all 0.3s ease;
+            min-height: 44px; /* Minimum touch target size */
         }
 
         .filter-button:hover, .filter-button.active {
@@ -137,11 +156,16 @@
             color: white;
         }
 
+        .filter-button:focus {
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+
         .games-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(var(--card-min-width), 1fr));
             gap: 30px;
-            max-width: 1400px;
+            max-width: var(--content-max-width);
             margin: 0 auto;
         }
 
@@ -154,9 +178,12 @@
             display: flex;
             flex-direction: column;
             height: 100%;
+            max-width: var(--card-max-width);
+            margin: 0 auto;
+            width: 100%;
         }
 
-        .game-card:hover {
+        .game-card:hover, .game-card:focus-within {
             transform: translateY(-10px);
             box-shadow: 0 15px 30px rgba(0,0,0,0.15);
         }
@@ -186,7 +213,7 @@
             transition: all 0.5s ease;
         }
 
-        .game-card:hover .game-image::before {
+        .game-card:hover .game-image::before, .game-card:focus-within .game-image::before {
             top: 100%;
             left: 100%;
         }
@@ -203,6 +230,7 @@
             color: var(--primary-color);
             margin-bottom: 15px;
             font-weight: 700;
+            word-break: break-word;
         }
 
         .game-description {
@@ -217,6 +245,8 @@
             align-items: center;
             justify-content: space-between;
             margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .game-category {
@@ -253,11 +283,17 @@
             text-align: center;
             border: none;
             cursor: pointer;
+            min-height: 44px; /* Minimum touch target size */
         }
 
-        .play-button:hover {
+        .play-button:hover, .play-button:focus {
             background: var(--primary-hover);
             transform: scale(1.05);
+            outline: none;
+        }
+
+        .play-button:focus {
+            box-shadow: 0 0 0 3px rgba(78, 84, 200, 0.3);
         }
 
         footer {
@@ -266,6 +302,9 @@
             padding: 30px;
             color: var(--text-light);
             border-top: 1px solid rgba(0,0,0,0.1);
+            max-width: var(--content-max-width);
+            margin-left: auto;
+            margin-right: auto;
         }
 
         footer a {
@@ -275,7 +314,7 @@
             transition: color 0.3s ease;
         }
 
-        footer a:hover {
+        footer a:hover, footer a:focus {
             color: var(--primary-hover);
             text-decoration: underline;
         }
@@ -283,6 +322,7 @@
         .switch-container {
             display: flex;
             gap: 20px;
+            flex-wrap: wrap;
         }
 
         .toggle-switch {
@@ -331,6 +371,10 @@
             background-color: var(--primary-color);
         }
 
+        input:focus + .slider {
+            box-shadow: 0 0 1px var(--primary-color);
+        }
+
         input:checked + .slider:before {
             transform: translateX(30px);
         }
@@ -356,48 +400,7 @@
             color: var(--text-light);
             font-weight: 500;
             cursor: pointer;
-        }
-
-        @media (max-width: 768px) {
-            header {
-                flex-direction: column;
-                gap: 20px;
-                padding: 1rem;
-            }
-            
-            h1 {
-                margin-top: 20px;
-                font-size: 2rem;
-            }
-            
-            .controls {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            
-            .search-box {
-                max-width: 100%;
-            }
-            
-            .switch-container {
-                justify-content: center;
-                margin-top: 20px;
-            }
-        }
-
-        @media (max-width: 600px) {
-            .games-container {
-                grid-template-columns: 1fr;
-            }
-            
-            .game-card {
-                max-width: 400px;
-                margin: 0 auto;
-            }
-            
-            .filter-buttons {
-                justify-content: center;
-            }
+            min-height: 44px; /* Minimum touch target size */
         }
 
         /* Language switcher styles */
@@ -432,355 +435,584 @@
         }
 
         /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        @media (prefers-reduced-motion: no-preference) {
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+
+            .game-card {
+                animation: fadeIn 0.6s ease-out;
+                animation-fill-mode: both;
+            }
+
+            .game-card:nth-child(2) { animation-delay: 0.1s; }
+            .game-card:nth-child(3) { animation-delay: 0.2s; }
+            .game-card:nth-child(4) { animation-delay: 0.3s; }
+            .game-card:nth-child(5) { animation-delay: 0.4s; }
+            .game-card:nth-child(6) { animation-delay: 0.5s; }
+            .game-card:nth-child(7) { animation-delay: 0.6s; }
+            .game-card:nth-child(8) { animation-delay: 0.7s; }
         }
 
-        .game-card {
-            animation: fadeIn 0.6s ease-out;
-            animation-fill-mode: both;
+        /* Additional responsive breakpoints */
+        @media (min-width: 1600px) {
+            :root {
+                --content-max-width: 1800px;
+            }
+            
+            .games-container {
+                grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            }
         }
 
-        .game-card:nth-child(2) { animation-delay: 0.1s; }
-        .game-card:nth-child(3) { animation-delay: 0.2s; }
-        .game-card:nth-child(4) { animation-delay: 0.3s; }
-        .game-card:nth-child(5) { animation-delay: 0.4s; }
-        .game-card:nth-child(6) { animation-delay: 0.5s; }
-        .game-card:nth-child(7) { animation-delay: 0.6s; }
-        .game-card:nth-child(8) { animation-delay: 0.7s; }
+        @media (max-width: 1200px) {
+            :root {
+                --card-min-width: 280px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 20px;
+                padding: 1rem;
+            }
+            
+            h1 {
+                margin-top: 20px;
+                font-size: 2rem;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .search-box {
+                max-width: 100%;
+            }
+            
+            .filter-buttons {
+                justify-content: center;
+            }
+            
+            .switch-container {
+                justify-content: center;
+                margin-top: 20px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            
+            .games-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .game-card {
+                max-width: 100%;
+            }
+            
+            .game-info {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.75rem;
+            }
+            
+            .filter-button {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .search-box input {
+                padding: 10px 15px 10px 40px;
+            }
+        }
+
+        /* High contrast mode support */
+        @media (forced-colors: active) {
+            .filter-button.active {
+                border: 2px solid SelectedItemText;
+            }
+            
+            .play-button {
+                border: 1px solid ButtonText;
+            }
+        }
+
+        /* Reduce motion for accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                transition: none !important;
+                animation: none !important;
+            }
+            
+            .game-card:hover, .game-card:focus-within {
+                transform: none;
+            }
+            
+            .play-button:hover, .play-button:focus {
+                transform: none;
+            }
+        }
+
+        /* Screen reader only class */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
     </style>
 </head>
 <body>
-    <header>
-        <div class="switch-container">
-            <label class="switch-label" onclick="toggleLanguage()">
-                <div class="toggle-switch">
-                    <input type="checkbox" id="language-toggle">
-                    <span class="slider">
-                        <i class="fas fa-language"></i>
-                    </span>
-                </div>
-                <span lang="de">DE/EN</span>
-                <span lang="en">EN/DE</span>
-            </label>
+    <div class="container">
+        <header>
+            <div class="switch-container">
+                <label class="switch-label" onclick="toggleLanguage()" tabindex="0" role="button" aria-label="Sprache wechseln / Change language">
+                    <div class="toggle-switch">
+                        <input type="checkbox" id="language-toggle" aria-hidden="true">
+                        <span class="slider">
+                            <i class="fas fa-language"></i>
+                        </span>
+                    </div>
+                    <span lang="de">DE/EN</span>
+                    <span lang="en">EN/DE</span>
+                </label>
+                
+                <label class="switch-label" onclick="toggleDarkMode()" tabindex="0" role="button" aria-label="Thema wechseln / Change theme">
+                    <div class="toggle-switch">
+                        <input type="checkbox" id="theme-toggle" aria-hidden="true">
+                        <span class="slider">
+                            <i class="fas fa-sun"></i>
+                            <i class="fas fa-moon"></i>
+                        </span>
+                    </div>
+                    <span lang="de">Thema</span>
+                    <span lang="en">Theme</span>
+                </label>
+            </div>
+        </header>
+
+        <h1 lang="de">HTML5 Spielesammlung</h1>
+        <h1 lang="en">HTML5 Games Collection</h1>
+        
+        <div class="controls">
+            <div class="search-box">
+                <i class="fas fa-search" aria-hidden="true"></i>
+                <input type="text" id="search-input" placeholder="Spiel suchen..." oninput="debounceSearch()" aria-label="Suche nach Spielen">
+            </div>
             
-            <label class="switch-label" onclick="toggleDarkMode()">
-                <div class="toggle-switch">
-                    <input type="checkbox" id="theme-toggle">
-                    <span class="slider">
-                        <i class="fas fa-sun"></i>
-                        <i class="fas fa-moon"></i>
-                    </span>
-                </div>
-                <span lang="de">Thema</span>
-                <span lang="en">Theme</span>
-            </label>
-        </div>
-    </header>
-
-    <h1 lang="de">HTML5 Spielesammlung</h1>
-    <h1 lang="en">HTML5 Games Collection</h1>
-    
-    <div class="controls">
-        <div class="search-box">
-            <i class="fas fa-search"></i>
-            <input type="text" id="search-input" placeholder="Spiel suchen..." oninput="filterGames()">
-        </div>
-        
-        <div class="filter-buttons">
-            <button class="filter-button active" data-filter="all" onclick="filterByCategory('all')">
-                <span lang="de">Alle</span>
-                <span lang="en">All</span>
-            </button>
-            <button class="filter-button" data-filter="puzzle" onclick="filterByCategory('puzzle')">
-                <span lang="de">Puzzle</span>
-                <span lang="en">Puzzle</span>
-            </button>
-            <button class="filter-button" data-filter="arcade" onclick="filterByCategory('arcade')">
-                <span lang="de">Arcade</span>
-                <span lang="en">Arcade</span>
-            </button>
-            <button class="filter-button" data-filter="strategy" onclick="filterByCategory('strategy')">
-                <span lang="de">Strategie</span>
-                <span lang="en">Strategy</span>
-            </button>
-        </div>
-    </div>
-    
-    <div class="games-container">
-        <div class="game-card" data-category="puzzle">
-            <div class="game-image">📦</div>
-            <div class="game-info">
-                <h2 class="game-title" lang="de">Sokoban</h2>
-                <h2 class="game-title" lang="en">Sokoban</h2>
-                <div class="game-meta">
-                    <span class="game-category">Puzzle</span>
-                    <div class="game-difficulty">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="far fa-star"></i>
-                        <i class="far fa-star"></i>
-                    </div>
-                </div>
-                <p class="game-description" lang="de">Klassisches Schiebepuzzle, das dein räumliches Denken auf die Probe stellt. Schiebe alle Kisten auf die markierten Felder.</p>
-                <p class="game-description" lang="en">Classic puzzle game that tests your spatial thinking. Push all boxes to the marked spots.</p>
-                <a href="Sokoban.html" class="play-button" lang="de"><i class="fas fa-play"></i> Spielen</a>
-                <a href="Sokoban.html" class="play-button" lang="en"><i class="fas fa-play"></i> Play Now</a>
-            </div>
-        </div>
-
-        <div class="game-card" data-category="puzzle">
-            <div class="game-image">🎲</div>
-            <div class="game-info">
-                <h2 class="game-title" lang="de">2048</h2>
-                <h2 class="game-title" lang="en">2048</h2>
-                <div class="game-meta">
-                    <span class="game-category">Puzzle</span>
-                    <div class="game-difficulty">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="far fa-star"></i>
-                        <i class="far fa-star"></i>
-                        <i class="far fa-star"></i>
-                    </div>
-                </div>
-                <p class="game-description" lang="de">Kombiniere Zahlen und versuche, die 2048-Kachel zu erreichen. Ein süchtig machendes Zahlenspiel.</p>
-                <p class="game-description" lang="en">Merge numbers and try to reach 2048! An addictive number puzzle game.</p>
-                <a href="2048.html" class="play-button" lang="de"><i class="fas fa-play"></i> Spielen</a>
-                <a href="2048.html" class="play-button" lang="en"><i class="fas fa-play"></i> Play Now</a>
-            </div>
-        </div>
-
-        <div class="game-card" data-category="arcade">
-            <div class="game-image">👻</div>
-            <div class="game-info">
-                <h2 class="game-title" lang="de">Pacman</h2>
-                <h2 class="game-title" lang="en">Pacman</h2>
-                <div class="game-meta">
-                    <span class="game-category">Arcade</span>
-                    <div class="game-difficulty">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="far fa-star"></i>
-                        <i class="far fa-star"></i>
-                    </div>
-                </div>
-                <p class="game-description" lang="de">Klassisches Arcade-Spiel, bei dem du alle Punkte fressen musst, während du Geistern ausweichst.</p>
-                <p class="game-description" lang="en">Classic arcade game, eat all dots while avoiding ghosts.</p>
-                <a href="pacman.html" class="play-button" lang="de"><i class="fas fa-play"></i> Spielen</a>
-                <a href="pacman.html" class="play-button" lang="en"><i class="fas fa-play"></i> Play Now</a>
-            </div>
-        </div>
-
-        <div class="game-card" data-category="arcade">
-            <div class="game-image">🏓</div>
-            <div class="game-info">
-                <h2 class="game-title" lang="de">Pong</h2>
-                <h2 class="game-title" lang="en">Pong</h2>
-                <div class="game-meta">
-                    <span class="game-category">Arcade</span>
-                    <div class="game-difficulty">
-                        <i class="fas fa-star"></i>
-                        <i class="far fa-star"></i>
-                        <i class="far fa-star"></i>
-                        <i class="far fa-star"></i>
-                        <i class="far fa-star"></i>
-                    </div>
-                </div>
-                <p class="game-description" lang="de">Der Klassiker unter den Videospielen. Steuere deinen Schläger und schlage den Ball zurück.</p>
-                <p class="game-description" lang="en">Classic table tennis arcade game. Control your paddle and hit the ball back.</p>
-                <a href="pong.html" class="play-button" lang="de"><i class="fas fa-play"></i> Spielen</a>
-                <a href="pong.html" class="play-button" lang="en"><i class="fas fa-play"></i> Play Now</a>
-            </div>
-        </div>
-
-        <div class="game-card" data-category="arcade">
-            <div class="game-image">🎮</div>
-            <div class="game-info">
-                <h2 class="game-title" lang="de">Breakout</h2>
-                <h2 class="game-title" lang="en">Breakout</h2>
-                <div class="game-meta">
-                    <span class="game-category">Arcade</span>
-                    <div class="game-difficulty">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="far fa-star"></i>
-                        <i class="far fa-star"></i>
-                        <i class="far fa-star"></i>
-                    </div>
-                </div>
-                <p class="game-description" lang="de">Steuere den Schläger, um alle Blöcke zu zerstören. Ein Arcade-Klassiker mit einfachen Regeln aber kniffliger Steuerung.</p>
-                <p class="game-description" lang="en">Control the paddle to break all the bricks. An arcade classic with simple rules but tricky controls.</p>
-                <a href="breakout.html" class="play-button" lang="de"><i class="fas fa-play"></i> Spielen</a>
-                <a href="breakout.html" class="play-button" lang="en"><i class="fas fa-play"></i> Play Now</a>
-            </div>
-        </div>
-
-        <div class="game-card" data-category="strategy">
-            <div class="game-image">⭕</div>
-            <div class="game-info">
-                <h2 class="game-title" lang="de">Gomoku</h2>
-                <h2 class="game-title" lang="en">Gomoku</h2>
-                <div class="game-meta">
-                    <span class="game-category">Strategie</span>
-                    <div class="game-difficulty">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="far fa-star"></i>
-                    </div>
-                </div>
-                <p class="game-description" lang="de">Klassisches Fünf-in-einer-Reihe Brettspiel. Platziere deine Steine strategisch, um zu gewinnen.</p>
-                <p class="game-description" lang="en">Classic Five-in-a-Row board game. Place your stones strategically to win.</p>
-                <a href="Gomoku.html" class="play-button" lang="de"><i class="fas fa-play"></i> Spielen</a>
-                <a href="Gomoku.html" class="play-button" lang="en"><i class="fas fa-play"></i> Play Now</a>
+            <div class="filter-buttons" role="group" aria-label="Spielkategoriefilter">
+                <button class="filter-button active" data-filter="all" onclick="filterByCategory('all')">
+                    <span lang="de">Alle</span>
+                    <span lang="en">All</span>
+                </button>
+                <button class="filter-button" data-filter="puzzle" onclick="filterByCategory('puzzle')">
+                    <span lang="de">Puzzle</span>
+                    <span lang="en">Puzzle</span>
+                </button>
+                <button class="filter-button" data-filter="arcade" onclick="filterByCategory('arcade')">
+                    <span lang="de">Arcade</span>
+                    <span lang="en">Arcade</span>
+                </button>
+                <button class="filter-button" data-filter="strategy" onclick="filterByCategory('strategy')">
+                    <span lang="de">Strategie</span>
+                    <span lang="en">Strategy</span>
+                </button>
             </div>
         </div>
         
-        <div class="game-card" data-category="puzzle">
-            <div class="game-image">⬛</div>
-            <div class="game-info">
-                <h2 class="game-title" lang="de">Tetris</h2>
-                <h2 class="game-title" lang="en">Tetris</h2>
-                <div class="game-meta">
-                    <span class="game-category">Puzzle</span>
-                    <div class="game-difficulty">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="far fa-star"></i>
-                        <i class="far fa-star"></i>
+        <main class="games-container">
+            <article class="game-card" data-category="puzzle">
+                <div class="game-image" aria-hidden="true">📦</div>
+                <div class="game-info">
+                    <h2 class="game-title" lang="de">Sokoban</h2>
+                    <h2 class="game-title" lang="en">Sokoban</h2>
+                    <div class="game-meta">
+                        <span class="game-category">Puzzle</span>
+                        <div class="game-difficulty" aria-label="Schwierigkeitsgrad: 3 von 5 Sternen" role="img">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                            <i class="far fa-star"></i>
+                        </div>
                     </div>
+                    <p class="game-description" lang="de">Klassisches Schiebepuzzle, das dein räumliches Denken auf die Probe stellt. Schiebe alle Kisten auf die markierten Felder.</p>
+                    <p class="game-description" lang="en">Classic puzzle game that tests your spatial thinking. Push all boxes to the marked spots.</p>
+                    <a href="Sokoban.html" class="play-button" lang="de"><i class="fas fa-play" aria-hidden="true"></i> Spielen</a>
+                    <a href="Sokoban.html" class="play-button" lang="en"><i class="fas fa-play" aria-hidden="true"></i> Play Now</a>
                 </div>
-                <p class="game-description" lang="de">Der zeitlose Puzzle-Klassiker. Stapel die fallenden Blöcke und vervollständige Reihen.</p>
-                <p class="game-description" lang="en">The timeless puzzle classic. Stack the falling blocks and complete rows.</p>
-                <a href="Tetris.html" class="play-button" lang="de"><i class="fas fa-play"></i> Spielen</a>
-                <a href="Tetris.html" class="play-button" lang="en"><i class="fas fa-play"></i> Play Now</a>
-            </div>
-        </div>
+            </article>
 
-        <div class="game-card" data-category="arcade">
-            <div class="game-image">🐦</div>
-            <div class="game-info">
-                <h2 class="game-title" lang="de">Flappy Bird</h2>
-                <h2 class="game-title" lang="en">Flappy Bird</h2>
-                <div class="game-meta">
-                    <span class="game-category">Arcade</span>
-                    <div class="game-difficulty">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
+            <article class="game-card" data-category="puzzle">
+                <div class="game-image" aria-hidden="true">🎲</div>
+                <div class="game-info">
+                    <h2 class="game-title" lang="de">2048</h2>
+                    <h2 class="game-title" lang="en">2048</h2>
+                    <div class="game-meta">
+                        <span class="game-category">Puzzle</span>
+                        <div class="game-difficulty" aria-label="Schwierigkeitsgrad: 2 von 5 Sternen" role="img">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                            <i class="far fa-star"></i>
+                            <i class="far fa-star"></i>
+                        </div>
                     </div>
+                    <p class="game-description" lang="de">Kombiniere Zahlen und versuche, die 2048-Kachel zu erreichen. Ein süchtig machendes Zahlenspiel.</p>
+                    <p class="game-description" lang="en">Merge numbers and try to reach 2048! An addictive number puzzle game.</p>
+                    <a href="2048.html" class="play-button" lang="de"><i class="fas fa-play" aria-hidden="true"></i> Spielen</a>
+                    <a href="2048.html" class="play-button" lang="en"><i class="fas fa-play" aria-hidden="true"></i> Play Now</a>
                 </div>
-                <p class="game-description" lang="de">Frustrierend schwieriges Geschicklichkeitsspiel. Fliege mit dem Vogel durch Hindernisse.</p>
-                <p class="game-description" lang="en">Frustratingly difficult skill game. Fly the bird through obstacles.</p>
-                <a href="FlappyBird.html" class="play-button" lang="de"><i class="fas fa-play"></i> Spielen</a>
-                <a href="FlappyBird.html" class="play-button" lang="en"><i class="fas fa-play"></i> Play Now</a>
-            </div>
-        </div>
+            </article>
+
+            <article class="game-card" data-category="arcade">
+                <div class="game-image" aria-hidden="true">👻</div>
+                <div class="game-info">
+                    <h2 class="game-title" lang="de">Pacman</h2>
+                    <h2 class="game-title" lang="en">Pacman</h2>
+                    <div class="game-meta">
+                        <span class="game-category">Arcade</span>
+                        <div class="game-difficulty" aria-label="Schwierigkeitsgrad: 3 von 5 Sternen" role="img">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                            <i class="far fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="game-description" lang="de">Klassisches Arcade-Spiel, bei dem du alle Punkte fressen musst, während du Geistern ausweichst.</p>
+                    <p class="game-description" lang="en">Classic arcade game, eat all dots while avoiding ghosts.</p>
+                    <a href="pacman.html" class="play-button" lang="de"><i class="fas fa-play" aria-hidden="true"></i> Spielen</a>
+                    <a href="pacman.html" class="play-button" lang="en"><i class="fas fa-play" aria-hidden="true"></i> Play Now</a>
+                </div>
+            </article>
+
+            <article class="game-card" data-category="arcade">
+                <div class="game-image" aria-hidden="true">🏓</div>
+                <div class="game-info">
+                    <h2 class="game-title" lang="de">Pong</h2>
+                    <h2 class="game-title" lang="en">Pong</h2>
+                    <div class="game-meta">
+                        <span class="game-category">Arcade</span>
+                        <div class="game-difficulty" aria-label="Schwierigkeitsgrad: 1 von 5 Sternen" role="img">
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                            <i class="far fa-star"></i>
+                            <i class="far fa-star"></i>
+                            <i class="far fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="game-description" lang="de">Der Klassiker unter den Videospielen. Steuere deinen Schläger und schlage den Ball zurück.</p>
+                    <p class="game-description" lang="en">Classic table tennis arcade game. Control your paddle and hit the ball back.</p>
+                    <a href="pong.html" class="play-button" lang="de"><i class="fas fa-play" aria-hidden="true"></i> Spielen</a>
+                    <a href="pong.html" class="play-button" lang="en"><i class="fas fa-play" aria-hidden="true"></i> Play Now</a>
+                </div>
+            </article>
+
+            <article class="game-card" data-category="arcade">
+                <div class="game-image" aria-hidden="true">🎮</div>
+                <div class="game-info">
+                    <h2 class="game-title" lang="de">Breakout</h2>
+                    <h2 class="game-title" lang="en">Breakout</h2>
+                    <div class="game-meta">
+                        <span class="game-category">Arcade</span>
+                        <div class="game-difficulty" aria-label="Schwierigkeitsgrad: 2 von 5 Sternen" role="img">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                            <i class="far fa-star"></i>
+                            <i class="far fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="game-description" lang="de">Steuere den Schläger, um alle Blöcke zu zerstören. Ein Arcade-Klassiker mit einfachen Regeln aber kniffliger Steuerung.</p>
+                    <p class="game-description" lang="en">Control the paddle to break all the bricks. An arcade classic with simple rules but tricky controls.</p>
+                    <a href="breakout.html" class="play-button" lang="de"><i class="fas fa-play" aria-hidden="true"></i> Spielen</a>
+                    <a href="breakout.html" class="play-button" lang="en"><i class="fas fa-play" aria-hidden="true"></i> Play Now</a>
+                </div>
+            </article>
+
+            <article class="game-card" data-category="strategy">
+                <div class="game-image" aria-hidden="true">⭕</div>
+                <div class="game-info">
+                    <h2 class="game-title" lang="de">Gomoku</h2>
+                    <h2 class="game-title" lang="en">Gomoku</h2>
+                    <div class="game-meta">
+                        <span class="game-category">Strategie</span>
+                        <div class="game-difficulty" aria-label="Schwierigkeitsgrad: 4 von 5 Sternen" role="img">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="game-description" lang="de">Klassisches Fünf-in-einer-Reihe Brettspiel. Platziere deine Steine strategisch, um zu gewinnen.</p>
+                    <p class="game-description" lang="en">Classic Five-in-a-Row board game. Place your stones strategically to win.</p>
+                    <a href="Gomoku.html" class="play-button" lang="de"><i class="fas fa-play" aria-hidden="true"></i> Spielen</a>
+                    <a href="Gomoku.html" class="play-button" lang="en"><i class="fas fa-play" aria-hidden="true"></i> Play Now</a>
+                </div>
+            </article>
+            
+            <article class="game-card" data-category="puzzle">
+                <div class="game-image" aria-hidden="true">⬛</div>
+                <div class="game-info">
+                    <h2 class="game-title" lang="de">Tetris</h2>
+                    <h2 class="game-title" lang="en">Tetris</h2>
+                    <div class="game-meta">
+                        <span class="game-category">Puzzle</span>
+                        <div class="game-difficulty" aria-label="Schwierigkeitsgrad: 3 von 5 Sternen" role="img">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                            <i class="far fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="game-description" lang="de">Der zeitlose Puzzle-Klassiker. Stapel die fallenden Blöcke und vervollständige Reihen.</p>
+                    <p class="game-description" lang="en">The timeless puzzle classic. Stack the falling blocks and complete rows.</p>
+                    <a href="Tetris.html" class="play-button" lang="de"><i class="fas fa-play" aria-hidden="true"></i> Spielen</a>
+                    <a href="Tetris.html" class="play-button" lang="en"><i class="fas fa-play" aria-hidden="true"></i> Play Now</a>
+                </div>
+            </article>
+
+            <article class="game-card" data-category="arcade">
+                <div class="game-image" aria-hidden="true">🐦</div>
+                <div class="game-info">
+                    <h2 class="game-title" lang="de">Flappy Bird</h2>
+                    <h2 class="game-title" lang="en">Flappy Bird</h2>
+                    <div class="game-meta">
+                        <span class="game-category">Arcade</span>
+                        <div class="game-difficulty" aria-label="Schwierigkeitsgrad: 5 von 5 Sternen" role="img">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="game-description" lang="de">Frustrierend schwieriges Geschicklichkeitsspiel. Fliege mit dem Vogel durch Hindernisse.</p>
+                    <p class="game-description" lang="en">Frustratingly difficult skill game. Fly the bird through obstacles.</p>
+                    <a href="FlappyBird.html" class="play-button" lang="de"><i class="fas fa-play" aria-hidden="true"></i> Spielen</a>
+                    <a href="FlappyBird.html" class="play-button" lang="en"><i class="fas fa-play" aria-hidden="true"></i> Play Now</a>
+                </div>
+            </article>
+        </main>
+        
+        <footer>
+            <p>2025 | by Zerone</p>
+            <p lang="de">Alle Rechte vorbehalten.</p>
+            <p lang="en">All Rights Reserved.</p>
+        </footer>
     </div>
-    
-    <footer>
-        <a href="https://github.com/Anionex" target="_blank">
-            <i class="fab fa-github"></i> 
-            <span lang="de">GitHub</span>
-            <span lang="en">GitHub</span>
-        </a>
-        <span lang="de">Von 2024 anion</span>
-        <span lang="en">By 2024 anion</span>
-        <p lang="de">© 2024 anion Alle Rechte vorbehalten</p>
-        <p lang="en">© 2024 anion All Rights Reserved</p>
-    </footer>
 
     <script>
+        // Debounce function to limit how often the search is performed
+        let searchTimeout = null;
+        function debounceSearch() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                filterGames();
+            }, 300); // 300ms delay
+        }
+
         // Remember user preferences
         document.addEventListener('DOMContentLoaded', function() {
-            // Load saved theme preference
-            if (localStorage.getItem('darkMode') === 'true') {
-                document.body.classList.add('dark-mode');
-                document.getElementById('theme-toggle').checked = true;
+            try {
+                // Load saved theme preference
+                if (localStorage.getItem('darkMode') === 'true') {
+                    document.body.classList.add('dark-mode');
+                    document.getElementById('theme-toggle').checked = true;
+                }
+                
+                // Load saved language preference
+                if (localStorage.getItem('language') === 'en') {
+                    document.body.classList.add('en');
+                    document.getElementById('language-toggle').checked = true;
+                    updateSearchPlaceholder();
+                }
+                
+                // Animate cards on load
+                animateCards();
+
+                // Add keyboard support for toggle switches
+                addKeyboardSupport();
+            } catch (error) {
+                console.error("Error initializing page:", error);
             }
-            
-            // Load saved language preference
-            if (localStorage.getItem('language') === 'en') {
-                document.body.classList.add('en');
-                document.getElementById('language-toggle').checked = true;
-                updateSearchPlaceholder();
-            }
-            
-            // Animate cards on load
-            animateCards();
         });
 
+        function addKeyboardSupport() {
+            const switchLabels = document.querySelectorAll('.switch-label');
+            switchLabels.forEach(label => {
+                label.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        if (this.getAttribute('onclick') === 'toggleLanguage()') {
+                            toggleLanguage();
+                        } else if (this.getAttribute('onclick') === 'toggleDarkMode()') {
+                            toggleDarkMode();
+                        }
+                    }
+                });
+            });
+        }
+
         function toggleLanguage() {
-            document.body.classList.toggle('en');
-            const isEnglish = document.body.classList.contains('en');
-            document.getElementById('language-toggle').checked = isEnglish;
-            localStorage.setItem('language', isEnglish ? 'en' : 'de');
-            updateSearchPlaceholder();
+            try {
+                document.body.classList.toggle('en');
+                const isEnglish = document.body.classList.contains('en');
+                document.getElementById('language-toggle').checked = isEnglish;
+                
+                // Save preference
+                localStorage.setItem('language', isEnglish ? 'en' : 'de');
+                updateSearchPlaceholder();
+                
+                // Announce language change to screen readers
+                announceToScreenReader(isEnglish ? 'Sprache zu Englisch geändert' : 'Language changed to German');
+            } catch (error) {
+                console.error("Error toggling language:", error);
+            }
         }
         
         function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
-            const isDarkMode = document.body.classList.contains('dark-mode');
-            document.getElementById('theme-toggle').checked = isDarkMode;
-            localStorage.setItem('darkMode', isDarkMode);
+            try {
+                document.body.classList.toggle('dark-mode');
+                const isDarkMode = document.body.classList.contains('dark-mode');
+                document.getElementById('theme-toggle').checked = isDarkMode;
+                
+                // Save preference
+                localStorage.setItem('darkMode', isDarkMode);
+                
+                // Announce theme change to screen readers
+                announceToScreenReader(isDarkMode ? 'Dunkelmodus aktiviert' : 'Hellmodus aktiviert');
+            } catch (error) {
+                console.error("Error toggling dark mode:", error);
+            }
         }
         
         function updateSearchPlaceholder() {
-            const searchInput = document.getElementById('search-input');
-            if (document.body.classList.contains('en')) {
-                searchInput.placeholder = "Search games...";
-            } else {
-                searchInput.placeholder = "Spiel suchen...";
+            try {
+                const searchInput = document.getElementById('search-input');
+                if (searchInput) {
+                    if (document.body.classList.contains('en')) {
+                        searchInput.placeholder = "Search games...";
+                    } else {
+                        searchInput.placeholder = "Spiel suchen...";
+                    }
+                }
+            } catch (error) {
+                console.error("Error updating search placeholder:", error);
             }
         }
         
         function filterGames() {
-            const searchText = document.getElementById('search-input').value.toLowerCase();
-            const cards = document.querySelectorAll('.game-card');
-            const activeFilter = document.querySelector('.filter-button.active').dataset.filter;
-            
-            cards.forEach(card => {
-                const title = card.querySelector('.game-title').textContent.toLowerCase();
-                const description = card.querySelector('.game-description').textContent.toLowerCase();
-                const category = card.dataset.category;
+            try {
+                const searchText = document.getElementById('search-input').value.toLowerCase();
+                const cards = document.querySelectorAll('.game-card');
+                const activeFilter = document.querySelector('.filter-button.active').dataset.filter;
+                let visibleCount = 0;
                 
-                const matchesSearch = title.includes(searchText) || description.includes(searchText);
-                const matchesCategory = activeFilter === 'all' || category === activeFilter;
+                cards.forEach(card => {
+                    // Check if we should search in German or English text
+                    let titleElement, descriptionElement;
+                    if (document.body.classList.contains('en')) {
+                        titleElement = card.querySelector('.game-title[lang="en"]');
+                        descriptionElement = card.querySelector('.game-description[lang="en"]');
+                    } else {
+                        titleElement = card.querySelector('.game-title[lang="de"]');
+                        descriptionElement = card.querySelector('.game-description[lang="de"]');
+                    }
+                    
+                    const title = titleElement ? titleElement.textContent.toLowerCase() : '';
+                    const description = descriptionElement ? descriptionElement.textContent.toLowerCase() : '';
+                    const category = card.dataset.category;
+                    
+                    const matchesSearch = title.includes(searchText) || description.includes(searchText);
+                    const matchesCategory = activeFilter === 'all' || category === activeFilter;
+                    
+                    if (matchesSearch && matchesCategory) {
+                        card.style.display = 'flex';
+                        visibleCount++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
                 
-                if (matchesSearch && matchesCategory) {
-                    card.style.display = 'flex';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
+                // Announce results to screen readers
+                const message = document.body.classList.contains('en') ? 
+                    `${visibleCount} games found` : 
+                    `${visibleCount} Spiele gefunden`;
+                announceToScreenReader(message);
+            } catch (error) {
+                console.error("Error filtering games:", error);
+            }
         }
         
         function filterByCategory(category) {
-            const buttons = document.querySelectorAll('.filter-button');
-            buttons.forEach(button => {
-                if (button.dataset.filter === category) {
-                    button.classList.add('active');
-                } else {
-                    button.classList.remove('active');
-                }
-            });
-            
-            filterGames();
+            try {
+                const buttons = document.querySelectorAll('.filter-button');
+                buttons.forEach(button => {
+                    if (button.dataset.filter === category) {
+                        button.classList.add('active');
+                        button.setAttribute('aria-pressed', 'true');
+                    } else {
+                        button.classList.remove('active');
+                        button.setAttribute('aria-pressed', 'false');
+                    }
+                });
+                
+                filterGames();
+            } catch (error) {
+                console.error("Error filtering by category:", error);
+            }
         }
         
         function animateCards() {
-            const cards = document.querySelectorAll('.game-card');
-            cards.forEach((card, index) => {
-                card.style.animationDelay = `${index * 0.1}s`;
-            });
+            try {
+                if (window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+                    const cards = document.querySelectorAll('.game-card');
+                    cards.forEach((card, index) => {
+                        card.style.animationDelay = `${index * 0.1}s`;
+                    });
+                }
+            } catch (error) {
+                console.error("Error animating cards:", error);
+            }
+        }
+        
+        // Helper function for screen reader announcements
+        function announceToScreenReader(message) {
+            // Create or reuse existing live region
+            let liveRegion = document.getElementById('sr-live-region');
+            if (!liveRegion) {
+                liveRegion = document.createElement('div');
+                liveRegion.id = 'sr-live-region';
+                liveRegion.className = 'sr-only';
+                liveRegion.setAttribute('aria-live', 'polite');
+                document.body.appendChild(liveRegion);
+            }
+            
+            // Set the message
+            liveRegion.textContent = message;
+            
+            // Clear after a moment
+            setTimeout(() => {
+                liveRegion.textContent = '';
+            }, 3000);
         }
     </script>
 </body>
