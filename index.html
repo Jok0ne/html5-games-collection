@@ -1,244 +1,787 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HTML5 Games Collection | HTML5 小游戏合集</title>
+    <title>HTML5 Spielesammlung | HTML5 Games Collection</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <style>
+        :root {
+            --primary-color: #4e54c8;
+            --primary-hover: #3f44ae;
+            --secondary-color: #8f94fb;
+            --background-light: #f5f7fa;
+            --background-dark: #222639;
+            --text-light: #333;
+            --text-dark: #f0f0f0;
+            --card-light: white;
+            --card-dark: #2a2e43;
+            --shadow-light: 0 10px 20px rgba(0,0,0,0.1);
+            --shadow-dark: 0 10px 20px rgba(0,0,0,0.3);
+            --animation-duration: 0.5s;
+        }
+
+        .dark-mode {
+            --primary-color: #6c72cb;
+            --primary-hover: #8f94fb;
+            --background-light: var(--background-dark);
+            --text-light: var(--text-dark);
+            --card-light: var(--card-dark);
+            --shadow-light: var(--shadow-dark);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            transition: background-color 0.3s, color 0.3s;
         }
 
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background-light);
+            color: var(--text-light);
             padding: 20px;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            margin-bottom: 2rem;
+            position: relative;
         }
 
         h1 {
             text-align: center;
-            color: #333;
-            margin-bottom: 40px;
+            margin: 0 auto;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            border-radius: 2px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .search-box {
+            flex: 1;
+            max-width: 400px;
+            display: flex;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 20px;
+            padding-left: 45px;
+            border: none;
+            border-radius: 30px;
+            background-color: var(--card-light);
+            color: var(--text-light);
+            font-size: 1rem;
+            box-shadow: var(--shadow-light);
+            outline: none;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary-color);
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-button {
+            padding: 10px 20px;
+            background-color: var(--card-light);
+            color: var(--text-light);
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 500;
+            box-shadow: var(--shadow-light);
+            transition: all 0.3s ease;
+        }
+
+        .filter-button:hover, .filter-button.active {
+            background-color: var(--primary-color);
+            color: white;
         }
 
         .games-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 30px;
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
         .game-card {
-            background: white;
-            border-radius: 10px;
+            background: var(--card-light);
+            border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
+            box-shadow: var(--shadow-light);
+            transition: transform var(--animation-duration) ease, box-shadow var(--animation-duration) ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
 
         .game-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
         }
 
         .game-image {
             width: 100%;
             height: 200px;
-            object-fit: cover;
-            border-bottom: 1px solid #eee;
             display: flex;
             justify-content: center;
             align-items: center;
             font-size: 5em;
-            background: #f8f8f8;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-image::before {
+            content: '';
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(45deg);
+            top: -50%;
+            left: -50%;
+            transition: all 0.5s ease;
+        }
+
+        .game-card:hover .game-image::before {
+            top: 100%;
+            left: 100%;
         }
 
         .game-info {
-            padding: 20px;
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
         }
 
         .game-title {
             font-size: 1.5em;
-            color: #333;
-            margin-bottom: 10px;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-weight: 700;
         }
 
         .game-description {
-            color: #666;
-            margin: 10px 0;
-            line-height: 1.5;
+            color: var(--text-light);
+            margin-bottom: 20px;
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+
+        .game-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .game-category {
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: rgba(78, 84, 200, 0.1);
+            color: var(--primary-color);
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+
+        .game-difficulty {
+            display: flex;
+            gap: 2px;
+        }
+
+        .game-difficulty i {
+            color: #ffd700;
         }
 
         .play-button {
-            display: inline-block;
-            padding: 10px 20px;
-            background: #4CAF50;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 12px 25px;
+            background: var(--primary-color);
             color: white;
             text-decoration: none;
-            border-radius: 5px;
-            transition: background 0.3s ease;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: background 0.3s ease, transform 0.2s ease;
+            text-align: center;
+            border: none;
+            cursor: pointer;
         }
 
         .play-button:hover {
-            background: #45a049;
+            background: var(--primary-hover);
+            transform: scale(1.05);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 30px;
+            color: var(--text-light);
+            border-top: 1px solid rgba(0,0,0,0.1);
+        }
+
+        footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+            margin: 0 15px;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: var(--primary-hover);
+            text-decoration: underline;
+        }
+
+        .switch-container {
+            display: flex;
+            gap: 20px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--card-light);
+            transition: .4s;
+            border-radius: 30px;
+            box-shadow: var(--shadow-light);
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        input:checked + .slider {
+            background-color: var(--primary-color);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(30px);
+        }
+
+        .slider i {
+            color: var(--text-light);
+            font-size: 0.8rem;
+            z-index: 0;
+        }
+
+        input:checked + .slider .fa-moon {
+            color: white;
+        }
+
+        input:not(:checked) + .slider .fa-sun {
+            color: var(--primary-color);
+        }
+
+        .switch-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-light);
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 20px;
+                padding: 1rem;
+            }
+            
+            h1 {
+                margin-top: 20px;
+                font-size: 2rem;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .search-box {
+                max-width: 100%;
+            }
+            
+            .switch-container {
+                justify-content: center;
+                margin-top: 20px;
+            }
         }
 
         @media (max-width: 600px) {
             .games-container {
                 grid-template-columns: 1fr;
             }
+            
+            .game-card {
+                max-width: 400px;
+                margin: 0 auto;
+            }
+            
+            .filter-buttons {
+                justify-content: center;
+            }
         }
 
-        /* 添加语言切换按钮样式 */
-        .language-switch {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 10px 20px;
-            background: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            z-index: 1000;
-        }
-
-        .language-switch:hover {
-            background: #45a049;
-        }
-
+        /* Language switcher styles */
         [lang="en"] {
             display: none;
         }
 
-        .en [lang="zh"] {
+        .en [lang="de"] {
             display: none;
         }
 
         .en [lang="en"] {
             display: block;
         }
+
+        .en .game-title[lang="en"], 
+        .en .game-description[lang="en"], 
+        .en .play-button[lang="en"],
+        .en span[lang="en"], 
+        .en p[lang="en"], 
+        .en h1[lang="en"] {
+            display: block;
+        }
+
+        .en .game-title[lang="de"], 
+        .en .game-description[lang="de"], 
+        .en .play-button[lang="de"],
+        .en span[lang="de"], 
+        .en p[lang="de"], 
+        .en h1[lang="de"] {
+            display: none;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .game-card {
+            animation: fadeIn 0.6s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .game-card:nth-child(2) { animation-delay: 0.1s; }
+        .game-card:nth-child(3) { animation-delay: 0.2s; }
+        .game-card:nth-child(4) { animation-delay: 0.3s; }
+        .game-card:nth-child(5) { animation-delay: 0.4s; }
+        .game-card:nth-child(6) { animation-delay: 0.5s; }
+        .game-card:nth-child(7) { animation-delay: 0.6s; }
+        .game-card:nth-child(8) { animation-delay: 0.7s; }
     </style>
 </head>
 <body>
-    <button class="language-switch" onclick="toggleLanguage()">EN/中文</button>
+    <header>
+        <div class="switch-container">
+            <label class="switch-label" onclick="toggleLanguage()">
+                <div class="toggle-switch">
+                    <input type="checkbox" id="language-toggle">
+                    <span class="slider">
+                        <i class="fas fa-language"></i>
+                    </span>
+                </div>
+                <span lang="de">DE/EN</span>
+                <span lang="en">EN/DE</span>
+            </label>
+            
+            <label class="switch-label" onclick="toggleDarkMode()">
+                <div class="toggle-switch">
+                    <input type="checkbox" id="theme-toggle">
+                    <span class="slider">
+                        <i class="fas fa-sun"></i>
+                        <i class="fas fa-moon"></i>
+                    </span>
+                </div>
+                <span lang="de">Thema</span>
+                <span lang="en">Theme</span>
+            </label>
+        </div>
+    </header>
 
-    <h1 lang="zh">每天一个 HTML5 小游戏</h1>
+    <h1 lang="de">HTML5 Spielesammlung</h1>
     <h1 lang="en">HTML5 Games Collection</h1>
     
+    <div class="controls">
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="search-input" placeholder="Spiel suchen..." oninput="filterGames()">
+        </div>
+        
+        <div class="filter-buttons">
+            <button class="filter-button active" data-filter="all" onclick="filterByCategory('all')">
+                <span lang="de">Alle</span>
+                <span lang="en">All</span>
+            </button>
+            <button class="filter-button" data-filter="puzzle" onclick="filterByCategory('puzzle')">
+                <span lang="de">Puzzle</span>
+                <span lang="en">Puzzle</span>
+            </button>
+            <button class="filter-button" data-filter="arcade" onclick="filterByCategory('arcade')">
+                <span lang="de">Arcade</span>
+                <span lang="en">Arcade</span>
+            </button>
+            <button class="filter-button" data-filter="strategy" onclick="filterByCategory('strategy')">
+                <span lang="de">Strategie</span>
+                <span lang="en">Strategy</span>
+            </button>
+        </div>
+    </div>
+    
     <div class="games-container">
-        <div class="game-card">
+        <div class="game-card" data-category="puzzle">
             <div class="game-image">📦</div>
             <div class="game-info">
-                <h2 class="game-title" lang="zh">推箱子</h2>
+                <h2 class="game-title" lang="de">Sokoban</h2>
                 <h2 class="game-title" lang="en">Sokoban</h2>
-                <p class="game-description" lang="zh">经典推箱子游戏，考验你的空间思维能力</p>
-                <p class="game-description" lang="en">Classic puzzle game that tests your spatial thinking</p>
-                <a href="Sokoban.html" class="play-button" lang="zh">开始游戏</a>
-                <a href="Sokoban.html" class="play-button" lang="en">Play Now</a>
+                <div class="game-meta">
+                    <span class="game-category">Puzzle</span>
+                    <div class="game-difficulty">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                    </div>
+                </div>
+                <p class="game-description" lang="de">Klassisches Schiebepuzzle, das dein räumliches Denken auf die Probe stellt. Schiebe alle Kisten auf die markierten Felder.</p>
+                <p class="game-description" lang="en">Classic puzzle game that tests your spatial thinking. Push all boxes to the marked spots.</p>
+                <a href="Sokoban.html" class="play-button" lang="de"><i class="fas fa-play"></i> Spielen</a>
+                <a href="Sokoban.html" class="play-button" lang="en"><i class="fas fa-play"></i> Play Now</a>
             </div>
         </div>
 
-        <div class="game-card">
+        <div class="game-card" data-category="puzzle">
             <div class="game-image">🎲</div>
             <div class="game-info">
-                <h2 class="game-title" lang="zh">2048</h2>
+                <h2 class="game-title" lang="de">2048</h2>
                 <h2 class="game-title" lang="en">2048</h2>
-                <p class="game-description" lang="zh">数字合并游戏，看看你能达到多高的分数</p>
-                <p class="game-description" lang="en">Merge numbers and try to reach 2048!</p>
-                <a href="2048.html" class="play-button" lang="zh">开始游戏</a>
-                <a href="2048.html" class="play-button" lang="en">Play Now</a>
+                <div class="game-meta">
+                    <span class="game-category">Puzzle</span>
+                    <div class="game-difficulty">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                    </div>
+                </div>
+                <p class="game-description" lang="de">Kombiniere Zahlen und versuche, die 2048-Kachel zu erreichen. Ein süchtig machendes Zahlenspiel.</p>
+                <p class="game-description" lang="en">Merge numbers and try to reach 2048! An addictive number puzzle game.</p>
+                <a href="2048.html" class="play-button" lang="de"><i class="fas fa-play"></i> Spielen</a>
+                <a href="2048.html" class="play-button" lang="en"><i class="fas fa-play"></i> Play Now</a>
             </div>
         </div>
 
-        <div class="game-card">
+        <div class="game-card" data-category="arcade">
             <div class="game-image">👻</div>
             <div class="game-info">
-                <h2 class="game-title" lang="zh">吃豆人</h2>
+                <h2 class="game-title" lang="de">Pacman</h2>
                 <h2 class="game-title" lang="en">Pacman</h2>
-                <p class="game-description" lang="zh">经典街机游戏，吃掉所有豆子，躲避幽灵</p>
-                <p class="game-description" lang="en">Classic arcade game, eat all dots while avoiding ghosts</p>
-                <a href="pacman.html" class="play-button" lang="zh">开始游戏</a>
-                <a href="pacman.html" class="play-button" lang="en">Play Now</a>
+                <div class="game-meta">
+                    <span class="game-category">Arcade</span>
+                    <div class="game-difficulty">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                    </div>
+                </div>
+                <p class="game-description" lang="de">Klassisches Arcade-Spiel, bei dem du alle Punkte fressen musst, während du Geistern ausweichst.</p>
+                <p class="game-description" lang="en">Classic arcade game, eat all dots while avoiding ghosts.</p>
+                <a href="pacman.html" class="play-button" lang="de"><i class="fas fa-play"></i> Spielen</a>
+                <a href="pacman.html" class="play-button" lang="en"><i class="fas fa-play"></i> Play Now</a>
             </div>
         </div>
 
-        <div class="game-card">
+        <div class="game-card" data-category="arcade">
             <div class="game-image">🏓</div>
             <div class="game-info">
-                <h2 class="game-title" lang="zh">乒乓球</h2>
+                <h2 class="game-title" lang="de">Pong</h2>
                 <h2 class="game-title" lang="en">Pong</h2>
-                <p class="game-description" lang="zh">经典的乒乓球对战游戏</p>
-                <p class="game-description" lang="en">Classic table tennis arcade game</p>
-                <a href="pong.html" class="play-button" lang="zh">开始游戏</a>
-                <a href="pong.html" class="play-button" lang="en">Play Now</a>
+                <div class="game-meta">
+                    <span class="game-category">Arcade</span>
+                    <div class="game-difficulty">
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                    </div>
+                </div>
+                <p class="game-description" lang="de">Der Klassiker unter den Videospielen. Steuere deinen Schläger und schlage den Ball zurück.</p>
+                <p class="game-description" lang="en">Classic table tennis arcade game. Control your paddle and hit the ball back.</p>
+                <a href="pong.html" class="play-button" lang="de"><i class="fas fa-play"></i> Spielen</a>
+                <a href="pong.html" class="play-button" lang="en"><i class="fas fa-play"></i> Play Now</a>
             </div>
         </div>
 
-        <div class="game-card">
+        <div class="game-card" data-category="arcade">
             <div class="game-image">🎮</div>
             <div class="game-info">
-                <h2 class="game-title" lang="zh">打砖块</h2>
+                <h2 class="game-title" lang="de">Breakout</h2>
                 <h2 class="game-title" lang="en">Breakout</h2>
-                <p class="game-description" lang="zh">控制挡板反弹球击碎砖块</p>
-                <p class="game-description" lang="en">Control the paddle to break all the bricks</p>
-                <a href="breakout.html" class="play-button" lang="zh">开始游戏</a>
-                <a href="breakout.html" class="play-button" lang="en">Play Now</a>
+                <div class="game-meta">
+                    <span class="game-category">Arcade</span>
+                    <div class="game-difficulty">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                    </div>
+                </div>
+                <p class="game-description" lang="de">Steuere den Schläger, um alle Blöcke zu zerstören. Ein Arcade-Klassiker mit einfachen Regeln aber kniffliger Steuerung.</p>
+                <p class="game-description" lang="en">Control the paddle to break all the bricks. An arcade classic with simple rules but tricky controls.</p>
+                <a href="breakout.html" class="play-button" lang="de"><i class="fas fa-play"></i> Spielen</a>
+                <a href="breakout.html" class="play-button" lang="en"><i class="fas fa-play"></i> Play Now</a>
             </div>
         </div>
 
-        <div class="game-card">
+        <div class="game-card" data-category="strategy">
             <div class="game-image">⭕</div>
             <div class="game-info">
-                <h2 class="game-title" lang="zh">五子棋</h2>
+                <h2 class="game-title" lang="de">Gomoku</h2>
                 <h2 class="game-title" lang="en">Gomoku</h2>
-                <p class="game-description" lang="zh">经典的五子连珠游戏</p>
-                <p class="game-description" lang="en">Classic Five-in-a-Row board game</p>
-                <a href="Gomoku.html" class="play-button" lang="zh">开始游戏</a>
-                <a href="Gomoku.html" class="play-button" lang="en">Play Now</a>
+                <div class="game-meta">
+                    <span class="game-category">Strategie</span>
+                    <div class="game-difficulty">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                    </div>
+                </div>
+                <p class="game-description" lang="de">Klassisches Fünf-in-einer-Reihe Brettspiel. Platziere deine Steine strategisch, um zu gewinnen.</p>
+                <p class="game-description" lang="en">Classic Five-in-a-Row board game. Place your stones strategically to win.</p>
+                <a href="Gomoku.html" class="play-button" lang="de"><i class="fas fa-play"></i> Spielen</a>
+                <a href="Gomoku.html" class="play-button" lang="en"><i class="fas fa-play"></i> Play Now</a>
             </div>
         </div>
-  <div class="game-card">
+        
+        <div class="game-card" data-category="puzzle">
             <div class="game-image">⬛</div>
             <div class="game-info">
-                <h2 class="game-title" lang="zh">俄罗斯方块</h2>
+                <h2 class="game-title" lang="de">Tetris</h2>
                 <h2 class="game-title" lang="en">Tetris</h2>
-                <p class="game-description" lang="zh">经典益智游戏</p>
-                <p class="game-description" lang="en">Classic puzzle game that tests your spatial thinking</p>
-                <a href="Tetris.html" class="play-button" lang="zh">开始游戏</a>
-                <a href="Tetris.html" class="play-button" lang="en">Play Now</a>
+                <div class="game-meta">
+                    <span class="game-category">Puzzle</span>
+                    <div class="game-difficulty">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                    </div>
+                </div>
+                <p class="game-description" lang="de">Der zeitlose Puzzle-Klassiker. Stapel die fallenden Blöcke und vervollständige Reihen.</p>
+                <p class="game-description" lang="en">The timeless puzzle classic. Stack the falling blocks and complete rows.</p>
+                <a href="Tetris.html" class="play-button" lang="de"><i class="fas fa-play"></i> Spielen</a>
+                <a href="Tetris.html" class="play-button" lang="en"><i class="fas fa-play"></i> Play Now</a>
             </div>
         </div>
 
-        <div class="game-card">
+        <div class="game-card" data-category="arcade">
             <div class="game-image">🐦</div>
             <div class="game-info">
-                <h2 class="game-title" lang="zh">Flappy鸟</h2>
-                <h2 class="game-title" lang="en">Flappy bird</h2>
-                <p class="game-description" lang="zh">经典微操？游戏</p>
-                <p class="game-description" lang="en">Classic puzzle game that tests your spatial thinking</p>
-                <a href="FlappyBird.html" class="play-button" lang="zh">开始游戏</a>
-                <a href="FlappyBird.html" class="play-button" lang="en">Play Now</a>
+                <h2 class="game-title" lang="de">Flappy Bird</h2>
+                <h2 class="game-title" lang="en">Flappy Bird</h2>
+                <div class="game-meta">
+                    <span class="game-category">Arcade</span>
+                    <div class="game-difficulty">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                <p class="game-description" lang="de">Frustrierend schwieriges Geschicklichkeitsspiel. Fliege mit dem Vogel durch Hindernisse.</p>
+                <p class="game-description" lang="en">Frustratingly difficult skill game. Fly the bird through obstacles.</p>
+                <a href="FlappyBird.html" class="play-button" lang="de"><i class="fas fa-play"></i> Spielen</a>
+                <a href="FlappyBird.html" class="play-button" lang="en"><i class="fas fa-play"></i> Play Now</a>
             </div>
         </div>
     </div>
-	
-
-	      
-    <footer style="text-align: center; margin-top: 40px; padding: 20px; color: #666;">
-        <a href="https://github.com/Anionex" style="color: #4CAF50; text-decoration: none; margin-right: 10px;">GitHub</a>
-        <span lang="zh">By 2024 anion</span>
+    
+    <footer>
+        <a href="https://github.com/Anionex" target="_blank">
+            <i class="fab fa-github"></i> 
+            <span lang="de">GitHub</span>
+            <span lang="en">GitHub</span>
+        </a>
+        <span lang="de">Von 2024 anion</span>
         <span lang="en">By 2024 anion</span>
-        <p lang="zh">© 2024 anion 版权所有</p>
+        <p lang="de">© 2024 anion Alle Rechte vorbehalten</p>
         <p lang="en">© 2024 anion All Rights Reserved</p>
     </footer>
 
     <script>
+        // Remember user preferences
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load saved theme preference
+            if (localStorage.getItem('darkMode') === 'true') {
+                document.body.classList.add('dark-mode');
+                document.getElementById('theme-toggle').checked = true;
+            }
+            
+            // Load saved language preference
+            if (localStorage.getItem('language') === 'en') {
+                document.body.classList.add('en');
+                document.getElementById('language-toggle').checked = true;
+                updateSearchPlaceholder();
+            }
+            
+            // Animate cards on load
+            animateCards();
+        });
+
         function toggleLanguage() {
             document.body.classList.toggle('en');
+            const isEnglish = document.body.classList.contains('en');
+            document.getElementById('language-toggle').checked = isEnglish;
+            localStorage.setItem('language', isEnglish ? 'en' : 'de');
+            updateSearchPlaceholder();
+        }
+        
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            document.getElementById('theme-toggle').checked = isDarkMode;
+            localStorage.setItem('darkMode', isDarkMode);
+        }
+        
+        function updateSearchPlaceholder() {
+            const searchInput = document.getElementById('search-input');
+            if (document.body.classList.contains('en')) {
+                searchInput.placeholder = "Search games...";
+            } else {
+                searchInput.placeholder = "Spiel suchen...";
+            }
+        }
+        
+        function filterGames() {
+            const searchText = document.getElementById('search-input').value.toLowerCase();
+            const cards = document.querySelectorAll('.game-card');
+            const activeFilter = document.querySelector('.filter-button.active').dataset.filter;
+            
+            cards.forEach(card => {
+                const title = card.querySelector('.game-title').textContent.toLowerCase();
+                const description = card.querySelector('.game-description').textContent.toLowerCase();
+                const category = card.dataset.category;
+                
+                const matchesSearch = title.includes(searchText) || description.includes(searchText);
+                const matchesCategory = activeFilter === 'all' || category === activeFilter;
+                
+                if (matchesSearch && matchesCategory) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+        
+        function filterByCategory(category) {
+            const buttons = document.querySelectorAll('.filter-button');
+            buttons.forEach(button => {
+                if (button.dataset.filter === category) {
+                    button.classList.add('active');
+                } else {
+                    button.classList.remove('active');
+                }
+            });
+            
+            filterGames();
+        }
+        
+        function animateCards() {
+            const cards = document.querySelectorAll('.game-card');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+            });
         }
     </script>
 </body>
-</html> 
+</html>
