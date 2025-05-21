@@ -31,6 +31,7 @@
         const pipes = [];
         let score = 0;
         let isGameOver = false;
+        let restartListenerAdded = false;
         const pipeGap = 100;
         const pipeWidth = 50;
         let pipeSpawnTimer = 0;
@@ -76,46 +77,45 @@
 
         // 游戏循环
         function gameLoop() {
-            if (isGameOver) return;
-
-            // 清除画布
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // 更新小鸟位置
-            bird.velocity += bird.gravity;
-            bird.y += bird.velocity;
+            if (!isGameOver) {
+                // 更新小鸟位置
+                bird.velocity += bird.gravity;
+                bird.y += bird.velocity;
 
-            // 边界检测
-            if (bird.y > canvas.height || bird.y < 0) {
-                isGameOver = true;
-            }
-
-            // 生成管道
-            pipeSpawnTimer++;
-            if (pipeSpawnTimer > pipeSpawnInterval) {
-                createPipe();
-                pipeSpawnTimer = 0;
-            }
-
-            // 更新管道
-            for (let i = pipes.length - 1; i >= 0; i--) {
-                const pipe = pipes[i];
-                pipe.x -= 2;
-
-                // 碰撞检测
-                if (checkCollision(pipe)) {
+                // 边界检测
+                if (bird.y > canvas.height || bird.y < 0) {
                     isGameOver = true;
                 }
 
-                // 得分计算
-                if (!pipe.passed && pipe.x + pipeWidth < bird.x) {
-                    score++;
-                    pipe.passed = true;
+                // 生成管道
+                pipeSpawnTimer++;
+                if (pipeSpawnTimer > pipeSpawnInterval) {
+                    createPipe();
+                    pipeSpawnTimer = 0;
                 }
 
-                // 移除屏幕外的管道
-                if (pipe.x < -pipeWidth) {
-                    pipes.splice(i, 1);
+                // 更新管道
+                for (let i = pipes.length - 1; i >= 0; i--) {
+                    const pipe = pipes[i];
+                    pipe.x -= 2;
+
+                    // 碰撞检测
+                    if (checkCollision(pipe)) {
+                        isGameOver = true;
+                    }
+
+                    // 得分计算
+                    if (!pipe.passed && pipe.x + pipeWidth < bird.x) {
+                        score++;
+                        pipe.passed = true;
+                    }
+
+                    // 移除屏幕外的管道
+                    if (pipe.x < -pipeWidth) {
+                        pipes.splice(i, 1);
+                    }
                 }
             }
 
@@ -157,13 +157,16 @@
                 ctx.fillText('Click or press Space to restart', canvas.width/2 - 140, canvas.height/2 + 50);
                 
                 // 重置游戏
-                document.addEventListener('click', () => location.reload());
-                document.addEventListener('keydown', (e) => {
-                    if (e.code === 'Space') location.reload();
-                });
+                if (!restartListenerAdded) {
+                    document.addEventListener('click', () => location.reload());
+                    document.addEventListener('keydown', (e) => {
+                        if (e.code === 'Space') location.reload();
+                    });
+                    restartListenerAdded = true;
+                }
+            } else {
+                requestAnimationFrame(gameLoop);
             }
-
-            requestAnimationFrame(gameLoop);
         }
 
         // 开始游戏
